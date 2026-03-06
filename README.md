@@ -27,3 +27,11 @@ All browsing data is stored locally and never leaves the user's browser.
 ## Purpose
 
 Attensia explores how attention flows across digital environments and helps users reflect on their browsing patterns.
+
+## Running the Extension
+
+1. Clone this repository
+2. Open Chrome and go to `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the `extension` folder
