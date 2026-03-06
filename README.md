@@ -4,7 +4,7 @@ Attensia is a privacy-first browser extension that visualizes how attention move
 
 ## Dashboard Preview
 
-![Attensia Dashboard](attensia dashboard.png)
+![Attensia Dashboard](attensia-dashboard.png)
 
 Instead of simply tracking time spent on websites, Attensia analyzes browsing behavior through multiple dimensions:
 
