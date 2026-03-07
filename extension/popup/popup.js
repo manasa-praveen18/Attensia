@@ -51,7 +51,16 @@ async function loadPopupData() {
 
   for (const [domain, count] of topDomains) {
     const li = document.createElement("li");
-    li.textContent = `${domain} — ${count} visits`;
+
+    const domainSpan = document.createElement("span");
+    domainSpan.textContent = domain;
+
+    const visitsSpan = document.createElement("span");
+    visitsSpan.className = "visits";
+    visitsSpan.textContent = `${count} visits`;
+
+    li.appendChild(domainSpan);
+    li.appendChild(visitsSpan);
     topSitesList.appendChild(li);
   }
 }
