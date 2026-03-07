@@ -543,15 +543,18 @@ function renderAgencyMeter(visitEvents, sortedDomainTimes) {
 }
 function getTypeColor(type) {
   const colors = {
-    search: "#3b82f6",
-    video: "#8b5cf6",
-    knowledge: "#22c55e",
-    development: "#22c55e",
-    community: "#f97316",
-    social: "#ef4444",
-    professional: "#06b6d4",
-    news: "#eab308",
-    unknown: "#64748b"
+    search: "#3b82f6",        
+    video: "#8b5cf6",         
+    knowledge: "#22c55e",     
+    development: "#22c55e",   
+    community: "#f97316",     
+    social: "#ef4444",        
+    professional: "#06b6d4",  
+    ai: "#10b981",            
+    shopping: "#f59e0b",      
+    audio: "#ec4899",         
+    communication: "#e2e8f0", 
+    unknown: "#a78bfa" 
   };
 
   return colors[type] || colors.unknown;

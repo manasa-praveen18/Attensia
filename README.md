@@ -1,37 +1,88 @@
 # Attention-Scape
 
-Attention-Scape is a privacy-first browser extension that visualizes how attention moves across the web.
-
-## Dashboard Preview
+> A privacy-first Chrome extension that visualizes how your attention moves across the web — tracking not just *where* you browse, but *how* your focus shifts over time.
 
 ![Attention-Scape Dashboard](attention-scape.png)
 
-Instead of simply tracking time spent on websites, Attention-Scape analyzes browsing behavior through multiple dimensions:
+---
 
-- **Attention Gravity** – which platforms capture the most attention
-- **Idea Evolution** – how browsing moves across sources
-- **Attention Drift** – when exploration turns into repeated loops
-- **Agency** – self-directed vs algorithm-driven browsing
-- **Information Diversity** – breadth of information sources
+## What It Does
 
-All browsing data is stored locally and never leaves the user's browser.
+Most screen-time tools just count minutes. Attention-Scape analyzes the *shape* of your browsing — detecting patterns like attention loops, algorithm-driven drift, and diversity of information sources.
+
+| Metric | Description |
+|---|---|
+| **Attention Gravity** | Which platforms capture the largest share of your attention |
+| **Idea Evolution** | How your browsing moves across topics and source types over time |
+| **Attention Drift** | When intentional exploration narrows into repeated loops |
+| **Agency Score** | How self-directed vs. algorithm-driven your browsing is (0–100) |
+| **Information Diversity** | How broadly your attention spreads across source environments |
+
+All data is stored locally in your browser using `chrome.storage.local` — nothing is ever sent to a server.
+
+---
 
 ## Tech Stack
 
-- Chrome Extension (Manifest V3)
-- JavaScript
-- Chrome Web APIs (tabs, storage, webNavigation)
-- HTML/CSS
-- Canvas API for custom visual analytics
+- **Chrome Extension** — Manifest V3 with a service worker background script
+- **Chrome Web APIs** — `tabs`, `webNavigation`, `storage`
+- **Canvas API** — custom animated gravity map with orbital physics and radial gradients
+- **Vanilla JavaScript (ES Modules)** — modular architecture with no external dependencies
+- **HTML/CSS** — fully custom dark-theme dashboard UI
 
-## Purpose
+---
 
-Attention-Scape explores how attention flows across digital environments and helps users reflect on their browsing patterns.
+## Architecture
 
-## Running the Extension
+```
+extension/
+├── background/
+│   └── background.js        # Service worker — tracks tab switches, visits, time spent
+├── dashboard/
+│   ├── dashboard.html
+│   ├── dashboard.css
+│   └── dashboard.js         # Renders all metrics and visualizations
+├── popup/
+│   ├── popup.html
+│   └── popup.js             # Quick-view popup with top sites
+└── src/
+    ├── config/
+    │   └── platformMap.js   # Domain-to-platform type mapping
+    ├── storage/
+    │   └── storage.js       # Chrome storage read/write with event trimming
+    ├── utils/
+    │   ├── utils.js
+    │   ├── platform.js
+    │   ├── domainStats.js
+    │   ├── attentionGravity.js
+    │   └── informationDiversity.js
+```
+
+---
+
+## How It Works
+
+1. **Event tracking** — `background.js` listens to `webNavigation.onCompleted`, `tabs.onActivated`, `tabs.onUpdated`, and `windows.onFocusChanged` to capture visits and precise time-spent per page
+2. **Data storage** — events are persisted to `chrome.storage.local`, capped at 5,000 entries to manage memory
+3. **Metric computation** — domain stats, attention shares, drift patterns, and agency scores are computed client-side from raw events
+4. **Visualization** — the Attention Gravity Map uses a custom `requestAnimationFrame` animation loop with orbital motion math and Canvas API rendering
+
+---
+
+## Installation
 
 1. Clone this repository
 2. Open Chrome and go to `chrome://extensions`
-3. Enable **Developer mode**
+3. Enable **Developer Mode** (top right)
 4. Click **Load unpacked**
-5. Select the `extension` folder
+5. Select the `extension/` folder
+
+The extension icon will appear in your toolbar. Click it to see your top sites, or open the full dashboard for detailed analytics.
+
+---
+
+## Privacy
+
+- No data leaves your browser
+- No accounts, no tracking, no third-party requests
+- All analysis runs entirely client-side

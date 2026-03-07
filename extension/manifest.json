@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Attensia",
+  "name": "Attention-Scape",
   "version": "1.0",
   "description": "Privacy-first browsing analytics",
   "permissions": ["tabs", "storage", "webNavigation"],
@@ -10,7 +10,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "Attensia",
+    "default_title": "Attention-Scape",
     "default_popup": "popup/popup.html"
   }
 }
