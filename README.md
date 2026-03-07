@@ -1,6 +1,8 @@
 # Attention-Scape
 
-> A privacy-first Chrome extension that visualizes how your attention moves across the web — tracking not just *where* you browse, but *how* your focus shifts over time.
+> A Chrome extension that tracks how your attention moves across the web — 
+not just time spent, but patterns like drift, loops, and how algorithm-driven 
+your browsing actually is.
 
 ![Attention-Scape Dashboard](attention-scape.png)
 
