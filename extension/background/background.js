@@ -7,42 +7,6 @@ let activeTitle = null;
 let activeUrl = null;
 let activeStartTime = null;
 
-const sensitiveDomains = [
-  "mail.google.com",
-  "outlook.com",
-  "web.whatsapp.com",
-  "accounts.google.com",
-  "bank",
-  "webmd.com",
-  "mayoclinic.org",
-  "healthline.com",
-  "medlineplus.gov",
-  "nih.gov",
-  "nhs.uk",
-  "drugs.com",
-  "rxlist.com",
-  "psychologytoday.com",
-  "betterhelp.com",
-  "talkspace.com",
-  "zocdoc.com",
-  "mychart",
-];
-
-async function isStrictPrivacyEnabled() {
-  const result = await chrome.storage.local.get(["strictPrivacy"]);
-  // strict privacy is ON by default
-  return result.strictPrivacy !== false;
-}
-
-async function getSafeTitle(domain, title) {
-  const strict = await isStrictPrivacyEnabled();
-  // if strict privacy is OFF, always return the real title
-  if (!strict) return title || "";
-  // if strict privacy is ON, suppress title only for sensitive domains
-  if (sensitiveDomains.some((s) => domain.includes(s))) return "";
-  return title || "";
-}
-
 async function saveTimeSpentEvent(endTime = Date.now()) {
   if (!activeDomain || !activeStartTime) return;
 
@@ -51,19 +15,18 @@ async function saveTimeSpentEvent(endTime = Date.now()) {
   // Ignore tiny durations like accidental switches
   if (duration < 1000) return;
 
-  // Resolve the title before building the event object
-  const safeTitle = await getSafeTitle(activeDomain, activeTitle);
-
   const event = {
     type: "time_spent",
     timestamp: endTime,
     domain: activeDomain,
-    title: safeTitle,
+    title: activeTitle || "",
+    url: activeUrl || "",
     tabId: activeTabId,
     duration: duration
   };
 
   await saveEvent(event);
+  console.log("Time spent event saved:", event);
 }
 
 async function startTrackingTab(tabId) {
@@ -95,6 +58,14 @@ async function startTrackingTab(tabId) {
     activeTitle = tab.title || "";
     activeUrl = tab.url || "";
     activeStartTime = Date.now();
+
+    console.log("Started tracking tab:", {
+      tabId: activeTabId,
+      domain: activeDomain,
+      title: activeTitle,
+      url: activeUrl,
+      startTime: activeStartTime
+    });
   } catch (error) {
     console.error("Error starting tab tracking:", error);
   }
@@ -115,18 +86,18 @@ chrome.webNavigation.onCompleted.addListener(async (details) => {
 
     const tab = await chrome.tabs.get(details.tabId);
 
-    // Resolve the title before building the event object
-    const safeTitle = await getSafeTitle(domain, tab.title);
-
     const event = {
       type: "visit",
       timestamp: Date.now(),
       domain: domain,
-      title: safeTitle,
+      title: tab.title || "",
+      url: url,
       tabId: details.tabId
     };
 
     await saveEvent(event);
+
+    console.log("Browsing event saved:", event);
   } catch (error) {
     console.error("Error saving browsing event:", error);
   }
