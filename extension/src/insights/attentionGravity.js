@@ -15,6 +15,12 @@ function getPlanetColor(domain) {
     community: "#f97316",
     social: "#ef4444",
     professional: "#06b6d4",
+    news: "#eab308",
+    ai: "#10b981",
+    shopping: "#f59e0b",
+    audio: "#ec4899",
+    communication: "#e2e8f0",
+    gaming: "#f97316",
     unknown: "#a78bfa"
   };
 
