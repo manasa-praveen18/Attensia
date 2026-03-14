@@ -81,6 +81,18 @@ The extension icon will appear in your toolbar. Click it to see your top sites, 
 
 ---
 
+## Known Limitations & Design Decisions
+
+**Single-Page App Navigation**
+Sites like Instagram, YouTube and TikTok load once and update dynamically without firing browser navigation events. Attention-Scape tracks time spent on these sites accurately via tab focus changes but cannot detect individual page navigations within them. A future improvement would use content scripts listening to the History API (`pushState`/`replaceState`) to detect SPA navigation.
+
+**Platform Intent Classification**
+Platforms are currently categorized by type (algorithmic or intent-based) at the domain level. This means YouTube is always labeled algorithmic even when used for studying. A more accurate approach would infer intent from behavioral signals already collected such as session length, switching frequency and surrounding sites in the browsing path rather than platform identity alone. This is a planned V2 improvement.
+
+**Local Storage Only**
+All data is stored in `chrome.storage.local`. No cross-device sync or historical trend analysis beyond the current session. This was a deliberate privacy-first decision where no data ever leaves the browser.
+
+---
 ## Privacy
 
 - No data leaves your browser
